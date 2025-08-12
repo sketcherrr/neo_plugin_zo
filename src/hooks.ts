@@ -8,6 +8,7 @@ import {
 import { getString, initLocale } from "./utils/locale";
 import { registerPrefsScripts } from "./modules/preferenceScript";
 import { createZToolkit } from "./utils/ztoolkit";
+import NoteSync from "./modules/noteSync";
 
 async function onStartup() {
   await Promise.all([
@@ -124,9 +125,10 @@ async function onNotify(
     type == "tab" &&
     extraData[ids[0]].type == "reader"
   ) {
-    BasicExampleFactory.exampleNotifierCallback();
-  } else {
-    return;
+    const reader = (Zotero as any).Reader.getByTabID(String(ids[0]));
+    if (reader) {
+      NoteSync.openForReader(reader);
+    }
   }
 }
 
