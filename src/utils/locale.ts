@@ -73,12 +73,8 @@ function _getString(
     return localStringWithPrefix;
   }
   if (branch && pattern.attributes) {
-    for (const attr of pattern.attributes) {
-      if (attr.name === branch) {
-        return attr.value;
-      }
-    }
-    return pattern.attributes[branch] || localStringWithPrefix;
+    const attr = pattern.attributes.find((a) => a.name === branch);
+    return attr ? attr.value : pattern.value || localStringWithPrefix;
   } else {
     return pattern.value || localStringWithPrefix;
   }
